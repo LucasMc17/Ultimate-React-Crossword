@@ -10,9 +10,9 @@ function Square({
   x,
   setFocus,
   input,
-  toggleDirection,
+  across,
+  clueSelected,
 }) {
-  console.log(input);
   if (!data) {
     return (
       <square
@@ -29,7 +29,7 @@ function Square({
   return (
     <square
       style={{
-        backgroundColor: focus ? "blue" : "white",
+        backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "white",
         border: "3px solid black",
         width: size,
         height: "0px",
@@ -37,7 +37,8 @@ function Square({
         position: "relative",
       }}
       onClick={() => {
-        focus ? toggleDirection() : setFocus(x, y);
+        // focus ? toggleDirection() : setFocus(x, y);
+        setFocus(x, y, focus ? !across : across);
       }}
       //   onFocus={() => setFocus(x, y)}
     >
@@ -66,6 +67,7 @@ function Square({
           display: "flex",
         }}
       >
+        {/* <h1>{data.acrossNum}</h1> */}
         {input ? (
           <>
             {input.split("").map((char) => (

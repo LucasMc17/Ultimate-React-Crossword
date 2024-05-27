@@ -15,41 +15,52 @@ function Crossword({ rows, columns, data, revealAnswers }) {
       for (let x = 0; x < data[y].length; x++) {
         const currentSquare = data[y][x];
 
-        if (
-          currentSquare &&
-          (y === 0 || x === 0 || !data[y - 1][x] || !data[y][x - 1])
-        ) {
-          currentSquare.displayNum = num;
-          num++;
+        if (currentSquare) {
+          if (y === 0 || x === 0 || !data[y - 1][x] || !data[y][x - 1]) {
+            currentSquare.displayNum = num;
+            num++;
+          }
+          if (y === 0 || !data[y - 1][x]) {
+            currentSquare.downNum = currentSquare.displayNum;
+          } else {
+            currentSquare.downNum = data[y - 1][x].downNum;
+          }
+          if (x === 0 || !data[y][x - 1]) {
+            currentSquare.acrossNum = currentSquare.displayNum;
+          } else {
+            currentSquare.acrossNum = data[y][x - 1].acrossNum;
+          }
         }
       }
     }
-    console.log(num);
+    return data;
   }
 
-  getClueMap();
-
+  const [dataSet, setDataSet] = useState(getClueMap());
   const [across, setAcross] = useState(true);
   const [xFocus, setXFocus] = useState(null);
   const [yFocus, setYFocus] = useState(null);
   const [answerMap, setAnswerMap] = useState(
     data.map((row) => row.map((cell) => (cell ? { answer: "" } : null))),
   );
+  const [currentClue, setCurrentClue] = useState(null);
 
   function toggleDirection() {
     setAcross(!across);
   }
 
-  function setFocus(x, y) {
-    console.log(x, y);
-    if (data[y]) {
-      if (data[y][x]) {
+  function setFocus(x, y, across) {
+    if (dataSet && dataSet[y]) {
+      if (dataSet[y][x]) {
         setXFocus(x);
         setYFocus(y);
+        setAcross(across);
+        setCurrentClue(
+          across ? dataSet[y][x].acrossNum : dataSet[y][x].downNum,
+        );
       }
     }
   }
-  console.log(answerMap);
 
   return (
     <div
@@ -64,7 +75,9 @@ function Crossword({ rows, columns, data, revealAnswers }) {
             ),
           ),
         );
-        across ? setFocus(xFocus + 1, yFocus) : setFocus(xFocus, yFocus + 1);
+        across
+          ? setFocus(xFocus + 1, yFocus, true)
+          : setFocus(xFocus, yFocus + 1, false);
       }}
       tabIndex="0"
     >
@@ -73,6 +86,7 @@ function Crossword({ rows, columns, data, revealAnswers }) {
           {row.map((cell, x) => (
             <Square
               size={size}
+              across={across}
               data={cell}
               revealAnswers={revealAnswers}
               focus={y === yFocus && x === xFocus}
@@ -81,6 +95,12 @@ function Crossword({ rows, columns, data, revealAnswers }) {
               input={answerMap[y][x]?.answer}
               setFocus={setFocus}
               toggleDirection={toggleDirection}
+              clueSelected={
+                dataSet[y][x] &&
+                (across
+                  ? dataSet[y][x].acrossNum === currentClue
+                  : dataSet[y][x].downNum === currentClue)
+              }
             />
           ))}
         </div>
