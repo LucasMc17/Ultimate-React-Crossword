@@ -18,9 +18,9 @@ const dataArray = [
   ],
   [
     { answer: "E" },
-    { answer: "L" },
+    null, //{ answer: "L" },
     { answer: "U" },
-    { answer: "D" },
+    null, //{ answer: "D" },
     { answer: "E" },
   ],
   [
