@@ -104,6 +104,9 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
         case "ArrowDown":
           setFocus(xFocus, yFocus + 1, false);
           break;
+        case "Backspace":
+          handleBackspace();
+          break;
         default:
           console.log("tbh I don't know what you just pressed...");
           break;
@@ -272,14 +275,57 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
     }
   }
 
+  function handleBackspace() {
+    const currentInput = answerMap[yFocus][xFocus]?.answer;
+    if (currentInput) {
+      setAnswerMap(
+        answerMap.map((row, y) =>
+          row.map((col, x) =>
+            x === xFocus && y === yFocus ? { answer: "" } : col,
+          ),
+        ),
+      );
+    } else {
+      if (
+        across
+          ? answerMap[yFocus][xFocus - 1]
+          : answerMap[yFocus - 1] && answerMap[yFocus - 1][xFocus]
+      ) {
+        setAnswerMap(
+          answerMap.map((row, y) =>
+            row.map((col, x) =>
+              across
+                ? x === xFocus - 1 && y === yFocus
+                  ? { answer: "" }
+                  : col
+                : x === xFocus && y === yFocus - 1
+                ? { answer: "" }
+                : col,
+            ),
+          ),
+        );
+      }
+      across
+        ? setFocus(xFocus - 1, yFocus, across)
+        : setFocus(xFocus, yFocus - 1, across);
+    }
+  }
+
   return (
     <div
-      style={{ display: "flex" }}
+      style={{ display: "flex", overflow: "hidden", height: "100vh" }}
       id="crossword"
       onKeyDown={handleKeyDown}
       tabIndex="0"
     >
-      <div style={{ width: "66%", backgroundColor: "black" }}>
+      <div
+        style={{
+          width: "66%",
+          backgroundColor: "black",
+          height: "fit-content",
+          overflow: "hidden",
+        }}
+      >
         {data.map((row, y) => (
           <div style={{ width: "100%", display: "flex" }}>
             {row.map((cell, x) => (

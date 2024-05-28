@@ -1,7 +1,9 @@
 function ClueList({ clues, across, currentClue, direction, focusClue }) {
   return (
-    <div style={{ width: "50%" }}>
-      <h1>{direction === "across" ? "ACROSS" : "DOWN"}</h1>
+    <div style={{ width: "50%", overflow: "scroll", position: "relative" }}>
+      <h1 style={{ position: "sticky", top: 0, backgroundColor: "white" }}>
+        {direction === "across" ? "ACROSS" : "DOWN"}
+      </h1>
       {clues.map((clue) => {
         const isSelected =
           direction === "across"
