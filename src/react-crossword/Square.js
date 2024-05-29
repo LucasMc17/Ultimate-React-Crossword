@@ -18,7 +18,7 @@ function Square({
       <square
         style={{
           backgroundColor: "black",
-          border: "3px solid black",
+          border: "1px solid black",
           width: size,
           height: "0px",
           paddingTop: size,
@@ -30,7 +30,7 @@ function Square({
     <square
       style={{
         backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "white",
-        border: "3px solid black",
+        border: "1px solid black",
         width: size,
         height: "0px",
         paddingTop: size,
@@ -45,10 +45,10 @@ function Square({
       {data.displayNum ? (
         <small
           style={{
-            fontSize: "14px",
+            fontSize: "10px",
             position: "absolute",
-            left: "2px",
-            top: "2px",
+            left: "0px",
+            top: "0px",
           }}
         >
           {data.displayNum}

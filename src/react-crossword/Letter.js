@@ -7,7 +7,7 @@ function Letter({ char, answer }) {
       xmlns="http://www.w3.org/2000/svg"
       fill="black"
       viewBox="0 0 150 200"
-      strokeWidth={8}
+      strokeWidth={15}
       strokeLinecap="round"
       stroke="black"
       style={{

@@ -63,14 +63,14 @@ const downs = [
 function App() {
   return (
     <div className="App">
-      {/* <Crossword
+      <Crossword
         rows={2}
         columns={5}
         data={dataArray}
         revealAnswers={false}
         acrosses={acrosses}
         downs={downs}
-      /> */}
+      />
       <Crossword
         rows={15}
         columns={15}

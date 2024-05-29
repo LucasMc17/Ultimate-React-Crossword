@@ -1,45 +1,32 @@
+import Clue from "./Clue";
+
 function ClueList({ clues, across, currentClue, direction, focusClue }) {
   return (
-    <div style={{ width: "50%", overflow: "scroll", position: "relative" }}>
-      <h1 style={{ position: "sticky", top: 0, backgroundColor: "white" }}>
+    <div style={{ width: "50%", height: "100%" }}>
+      <h1
+        style={{
+          backgroundColor: "white",
+          margin: "0",
+        }}
+      >
         {direction === "across" ? "ACROSS" : "DOWN"}
       </h1>
-      {clues.map((clue) => {
-        const isSelected =
-          direction === "across"
-            ? across && currentClue === clue.num
-            : !across && currentClue === clue.num;
-        return (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              color: isSelected ? "white" : "black",
-              margin: "5px 0",
-            }}
-            onClick={() => focusClue(clue.num, direction === "across")}
-          >
-            <div
-              style={{
-                backgroundColor: isSelected ? "blue" : "transparent",
-                height: "100%",
-              }}
-            >
-              <p style={{ margin: "0" }}>{clue.num}.</p>
-            </div>
-            <div
-              style={{
-                textAlign: "left",
-                padding: "0px 4px",
-                backgroundColor: isSelected ? "lightblue" : "transparent",
-              }}
-            >
-              <p style={{ margin: "0" }}>{clue.clue}</p>
-            </div>
-          </div>
-        );
-      })}
+      <div style={{ overflow: "scroll", height: "90%" }}>
+        {clues.map((clue) => {
+          const isSelected =
+            direction === "across"
+              ? across && currentClue === clue.num
+              : !across && currentClue === clue.num;
+          return (
+            <Clue
+              isSelected={isSelected}
+              focusClue={focusClue}
+              clue={clue}
+              direction={direction}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

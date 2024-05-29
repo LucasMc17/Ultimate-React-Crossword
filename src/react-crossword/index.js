@@ -11,7 +11,7 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
   //     throw "Data Array must be of length equal to the number of rows multiplied by columns!";
   //   }
   //   const size = `calc(${100 / columns}% - 6px)`;
-  const size = `calc(${100 / cols}% - 6px)`;
+  const size = `calc(${100 / cols}% - 2px)`;
 
   function getClueMap() {
     let num = 1;
@@ -313,7 +313,7 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
 
   return (
     <div
-      style={{ display: "flex", overflow: "hidden", height: "100vh" }}
+      style={{ display: "flex", height: "100vh" }}
       id="crossword"
       onKeyDown={handleKeyDown}
       tabIndex="0"
@@ -323,7 +323,6 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
           width: "66%",
           backgroundColor: "black",
           height: "fit-content",
-          overflow: "hidden",
         }}
       >
         {data.map((row, y) => (
