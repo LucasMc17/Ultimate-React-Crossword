@@ -44,13 +44,44 @@ const dataArray = [
   ],
 ];
 
-const onInput = (input, crosswordData) => {
+const onInput = (x, y, input, crosswordData) => {
   console.log("SOMEONE IS INPUTTING");
-  console.log(input);
-  console.log(crosswordData);
-  return crosswordData.map((row) =>
-    row.map((col) => (col ? { ...col, input } : col)),
-  );
+  // console.log(input);
+  // console.log(crosswordData);
+  // console.log(x);
+  // console.log(y);
+  // return crosswordData.map((row) =>
+  //   row.map((col) => (col ? { ...col, input } : col)),
+  // );
+};
+
+const onCellCorrect = (x, y, input, crosswordData) => {
+  console.log("THAT CELL IS CORRECT");
+  // console.log(input);
+  // console.log(crosswordData);
+  // console.log(x);
+  // console.log(y);
+  // return crosswordData.map((row) =>
+  //   row.map((col) => (col ? { ...col, input: "CORRECT" } : col)),
+  // );
+};
+
+const onClueCorrect = (clueNum, direction, crosswordData) => {
+  console.log("THAT CLUE IS CORRECT");
+  // console.log(clueNum);
+  // console.log(direction);
+  // console.log(crosswordData);
+  // return crosswordData.map((row) =>
+  //   row.map((col) => (col ? { ...col, input: "CORRECT" } : col)),
+  // );
+};
+
+const onPuzzleFinished = (crosswordData) => {
+  console.log("THE PUZZLE IS FINISHED");
+};
+
+const onPuzzleCorrect = (crosswordData) => {
+  console.log("THE PUZZLE IS CORRECT");
 };
 
 const acrosses = [
@@ -72,14 +103,19 @@ const downs = [
 function App() {
   return (
     <div className="App">
-      {/* <Crossword
+      <Crossword
         rows={2}
         columns={5}
         data={dataArray}
         revealAnswers={false}
         acrosses={acrosses}
         downs={downs}
-      /> */}
+        onInput={onInput}
+        onCellCorrect={onCellCorrect}
+        onClueCorrect={onClueCorrect}
+        onPuzzleFinished={onPuzzleFinished}
+        onPuzzleCorrect={onPuzzleCorrect}
+      />
       <Crossword
         rows={15}
         columns={15}
@@ -88,6 +124,8 @@ function App() {
         acrosses={exampleAcrosses}
         downs={exampleDowns}
         onInput={onInput}
+        onCellCorrect={onCellCorrect}
+        onClueCorrect={onClueCorrect}
       />
     </div>
   );

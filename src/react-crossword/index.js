@@ -13,6 +13,10 @@ function Crossword({
   acrosses,
   downs,
   onInput,
+  onCellCorrect,
+  onClueCorrect,
+  onPuzzleFinished,
+  onPuzzleCorrect,
 }) {
   const cols = data[0].length;
   //   if (data.length !== rows * columns) {
@@ -84,9 +88,64 @@ function Crossword({
       );
       let newData;
       if (onInput) {
-        newData = onInput(char.key.toUpperCase(), nextState);
+        newData = onInput(xFocus, yFocus, char.key.toUpperCase(), nextState);
       }
-
+      if (
+        onCellCorrect &&
+        nextState[yFocus][xFocus].input === nextState[yFocus][xFocus].answer
+      ) {
+        newData = onCellCorrect(xFocus, yFocus, char.key, nextState);
+      }
+      //   console.log(
+      //     nextState
+      //       .flat(1)
+      //       .filter(
+      //         (square) =>
+      //           square &&
+      //           square.acrossNum === nextState[yFocus][xFocus].acrossNum,
+      //       ),
+      //   );
+      if (
+        onClueCorrect && across
+          ? nextState
+              .flat(1)
+              .filter(
+                (square) =>
+                  square &&
+                  square.acrossNum === nextState[yFocus][xFocus].acrossNum,
+              )
+              .every((square) => square.input === square.answer)
+          : nextState
+              .flat(1)
+              .filter(
+                (square) =>
+                  square &&
+                  square.downNum === nextState[yFocus][xFocus].downNum,
+              )
+              .every((square) => square.input === square.answer)
+      ) {
+        newData = onClueCorrect(
+          across
+            ? dataSet[yFocus][xFocus].acrossNum
+            : dataSet[yFocus][xFocus].downNum,
+          across ? "across" : "down",
+          nextState,
+        );
+      }
+      if (
+        onPuzzleFinished &&
+        nextState.flat(1).every((square) => !square || square.input)
+      ) {
+        newData = onPuzzleFinished(nextState);
+      }
+      if (
+        onPuzzleCorrect &&
+        nextState
+          .flat(1)
+          .every((square) => !square || square.input === square.answer)
+      ) {
+        newData = onPuzzleCorrect(nextState);
+      }
       if (newData) {
         setDataSet(newData);
       } else {
