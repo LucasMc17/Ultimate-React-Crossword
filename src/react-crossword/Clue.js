@@ -6,13 +6,14 @@ function Clue({ isSelected, focusClue, clue, direction }) {
   const scrollToElement = () => {
     const { current } = ref;
     if (current) {
-      current.scrollIntoView({ behavior: "smooth" });
-      //   console.log(current.parentNode.scrollBottom, current.offsetBottom);
-      //   if (current.parentNode.scrollTop < current.offsetTop) {
-      //     current.parentNode.scrollTop = current.offsetTop;
-      //   } else if (current.parentNode.scrollBottom < current.offsetBottom) {
-      //     current.parentNode.scrollTop = current.offsetTop + 100;
-      //   }
+      const relativeTop =
+        window.scrollY > current.parentNode.offsetTop
+          ? window.scrollY
+          : current.parentNode.offsetTop;
+      current.parentNode.scrollTo({
+        behavior: "smooth",
+        top: current.offsetTop - relativeTop,
+      });
     }
   };
 

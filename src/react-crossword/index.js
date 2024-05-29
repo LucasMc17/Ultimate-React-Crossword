@@ -79,6 +79,12 @@ function Crossword({
   function handleKeyDown(char) {
     char.preventDefault();
     if (alphabet.includes(char.key)) {
+      if (dataSet[yFocus][xFocus].disabled) {
+        across
+          ? setFocus(xFocus + 1, yFocus, true)
+          : setFocus(xFocus, yFocus + 1, false);
+        return;
+      }
       const nextState = dataSet.map((row, yIndex) =>
         row.map((col, xIndex) =>
           yIndex === yFocus && xIndex === xFocus
@@ -94,17 +100,8 @@ function Crossword({
         onCellCorrect &&
         nextState[yFocus][xFocus].input === nextState[yFocus][xFocus].answer
       ) {
-        newData = onCellCorrect(xFocus, yFocus, char.key, nextState);
+        newData = onCellCorrect(xFocus, yFocus, char.key, nextState) || newData;
       }
-      //   console.log(
-      //     nextState
-      //       .flat(1)
-      //       .filter(
-      //         (square) =>
-      //           square &&
-      //           square.acrossNum === nextState[yFocus][xFocus].acrossNum,
-      //       ),
-      //   );
       if (
         onClueCorrect && across
           ? nextState
@@ -124,27 +121,29 @@ function Crossword({
               )
               .every((square) => square.input === square.answer)
       ) {
-        newData = onClueCorrect(
-          across
-            ? dataSet[yFocus][xFocus].acrossNum
-            : dataSet[yFocus][xFocus].downNum,
-          across ? "across" : "down",
-          nextState,
-        );
+        newData =
+          onClueCorrect(
+            across
+              ? dataSet[yFocus][xFocus].acrossNum
+              : dataSet[yFocus][xFocus].downNum,
+            across ? "across" : "down",
+            nextState,
+          ) || newData;
       }
       if (
         onPuzzleFinished &&
         nextState.flat(1).every((square) => !square || square.input)
       ) {
-        newData = onPuzzleFinished(nextState);
-      }
-      if (
-        onPuzzleCorrect &&
-        nextState
-          .flat(1)
-          .every((square) => !square || square.input === square.answer)
-      ) {
-        newData = onPuzzleCorrect(nextState);
+        if (
+          onPuzzleCorrect &&
+          nextState
+            .flat(1)
+            .every((square) => !square || square.input === square.answer)
+        ) {
+          newData = onPuzzleCorrect(nextState) || newData;
+        } else {
+          newData = onPuzzleFinished(nextState) || newData;
+        }
       }
       if (newData) {
         setDataSet(newData);
@@ -155,10 +154,8 @@ function Crossword({
         ? setFocus(xFocus + 1, yFocus, true)
         : setFocus(xFocus, yFocus + 1, false);
     } else {
-      console.log(char);
       switch (char.key) {
         case "Tab":
-          console.log("YOU PRESSED TAB");
           if (char.shiftKey) {
             skipClue(false);
           } else {
@@ -181,7 +178,6 @@ function Crossword({
           handleBackspace();
           break;
         default:
-          console.log("tbh I don't know what you just pressed...");
           break;
       }
     }
@@ -200,7 +196,6 @@ function Crossword({
   }
 
   function skipClue(forward) {
-    console.log("SKIPPING");
     let newX = xFocus,
       newY = yFocus;
     if (across) {
@@ -209,13 +204,9 @@ function Crossword({
           ? newX !== dataSet[0].length - 1 || newY !== dataSet.length - 1
           : newX !== 0 || newY !== 0
       ) {
-        console.log("WHILE LOOP");
         if (forward ? newX !== dataSet[0].length - 1 : newX !== 0) {
-          console.log(forward ? "MOVING RIGHT" : "MOVING LEFT");
           forward ? newX++ : newX--;
-          console.log("X: ", newX, "Y: ", newY);
         } else if (forward ? newY !== dataSet.length - 1 : newY !== 0) {
-          console.log(forward ? "MOVING DOWN" : "MOVING UP");
           forward ? newY++ : newY--;
           newX = forward ? 0 : dataSet[0].length - 1;
         }
@@ -246,13 +237,9 @@ function Crossword({
           setFocus(newX, newY, !across);
           return;
         }
-        console.log("WHILE LOOP");
         if (forward ? newX !== dataSet[0].length - 1 : newX !== 0) {
-          console.log(forward ? "MOVING RIGHT" : "MOVING LEFT");
           forward ? newX++ : newX--;
-          console.log("X: ", newX, "Y: ", newY);
         } else if (forward ? newY !== dataSet.length - 1 : newY !== 0) {
-          console.log(forward ? "MOVING DOWN" : "MOVING UP");
           forward ? newY++ : newY--;
           newX = forward ? 0 : dataSet[0].length - 1;
         }
@@ -263,7 +250,6 @@ function Crossword({
       let newX = xFocus,
         newY = yFocus;
       if (dataSet[newY][newX].displayNum !== currentClue) {
-        console.log("NOT ON FIRST SQUARE");
         while (true) {
           newY--;
           if (dataSet[newY][newX].displayNum === currentClue) {
@@ -271,19 +257,14 @@ function Crossword({
           }
         }
       }
-      console.log("X: ", newX, "Y: ", newY);
       while (
         forward
           ? newX !== dataSet[0].length - 1 || newY !== dataSet.length - 1
           : newX !== 0 || newY !== 0
       ) {
-        console.log("WHILE LOOP");
         if (forward ? newX !== dataSet[0].length - 1 : newX !== 0) {
-          console.log(forward ? "MOVING RIGHT" : "MOVING LEFT");
           forward ? newX++ : newX--;
-          console.log("X: ", newX, "Y: ", newY);
         } else if (forward ? newY !== dataSet.length - 1 : newY !== 0) {
-          console.log(forward ? "MOVING DOWN" : "MOVING UP");
           forward ? newY++ : newY--;
           newX = forward ? 0 : dataSet[0].length - 1;
         }
@@ -313,13 +294,9 @@ function Crossword({
           setFocus(newX, newY, !across);
           return;
         }
-        console.log("WHILE LOOP");
         if (forward ? newX !== dataSet[0].length - 1 : newX !== 0) {
-          console.log(forward ? "MOVING RIGHT" : "MOVING LEFT");
           forward ? newX++ : newX--;
-          console.log("X: ", newX, "Y: ", newY);
         } else if (forward ? newY !== dataSet.length - 1 : newY !== 0) {
-          console.log(forward ? "MOVING DOWN" : "MOVING UP");
           forward ? newY++ : newY--;
           newX = forward ? 0 : dataSet[0].length - 1;
         }
@@ -399,9 +376,10 @@ function Crossword({
         }}
       >
         {data.map((row, y) => (
-          <div style={{ width: "100%", display: "flex" }}>
+          <div style={{ width: "100%", display: "flex" }} key={y}>
             {row.map((cell, x) => (
               <Square
+                key={`${x}-${y}`}
                 size={size}
                 across={across}
                 data={cell}

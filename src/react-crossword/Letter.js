@@ -15,8 +15,9 @@ function Letter({ char, answer }) {
         opacity: answer ? "0.5" : "1",
       }}
     >
-      {data.map((datum) => (
+      {data.map((datum, i) => (
         <SVGElement
+          key={i}
           type={datum.type}
           x1={datum.x1}
           x2={datum.x2}

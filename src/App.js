@@ -68,6 +68,17 @@ const onCellCorrect = (x, y, input, crosswordData) => {
 
 const onClueCorrect = (clueNum, direction, crosswordData) => {
   console.log("THAT CLUE IS CORRECT");
+  return crosswordData.map((row, y) =>
+    row.map((cell, x) =>
+      direction === "across"
+        ? cell && cell.acrossNum === clueNum
+          ? { ...cell, disabled: true }
+          : cell
+        : cell && cell.downNum === clueNum
+        ? { ...cell, disabled: true }
+        : cell,
+    ),
+  );
   // console.log(clueNum);
   // console.log(direction);
   // console.log(crosswordData);

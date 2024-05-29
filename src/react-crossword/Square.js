@@ -15,7 +15,7 @@ function Square({
 }) {
   if (!data) {
     return (
-      <square
+      <div
         style={{
           backgroundColor: "black",
           border: "1px solid black",
@@ -23,11 +23,11 @@ function Square({
           height: "0px",
           paddingTop: size,
         }}
-      ></square>
+      ></div>
     );
   }
   return (
-    <square
+    <div
       style={{
         backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "white",
         border: "1px solid black",
@@ -70,8 +70,8 @@ function Square({
         {/* <h1>{data.acrossNum}</h1> */}
         {input ? (
           <>
-            {input.split("").map((char) => (
-              <Letter char={char} answer={false} />
+            {input.split("").map((char, i) => (
+              <Letter char={char} answer={false} key={i} />
             ))}
           </>
         ) : (
@@ -79,15 +79,15 @@ function Square({
         )}
         {revealAnswers ? (
           <>
-            {data.answer.split("").map((char) => (
-              <Letter char={char} answer={true} />
+            {data.answer.split("").map((char, i) => (
+              <Letter char={char} answer={true} key={i} />
             ))}
           </>
         ) : (
           <></>
         )}
       </div>
-    </square>
+    </div>
   );
 }
 

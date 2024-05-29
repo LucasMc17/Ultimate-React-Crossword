@@ -12,13 +12,14 @@ function ClueList({ clues, across, currentClue, direction, focusClue }) {
         {direction === "across" ? "ACROSS" : "DOWN"}
       </h1>
       <div style={{ overflow: "scroll", height: "90%" }}>
-        {clues.map((clue) => {
+        {clues.map((clue, i) => {
           const isSelected =
             direction === "across"
               ? across && currentClue === clue.num
               : !across && currentClue === clue.num;
           return (
             <Clue
+              key={i}
               isSelected={isSelected}
               focusClue={focusClue}
               clue={clue}
