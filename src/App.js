@@ -44,6 +44,15 @@ const dataArray = [
   ],
 ];
 
+const onInput = (input, crosswordData) => {
+  console.log("SOMEONE IS INPUTTING");
+  console.log(input);
+  console.log(crosswordData);
+  return crosswordData.map((row) =>
+    row.map((col) => (col ? { ...col, input } : col)),
+  );
+};
+
 const acrosses = [
   { num: 1, clue: "Parsley, ___, rosemary and thyme" },
   { num: 5, clue: "Garden Growth" },
@@ -63,21 +72,22 @@ const downs = [
 function App() {
   return (
     <div className="App">
-      <Crossword
+      {/* <Crossword
         rows={2}
         columns={5}
         data={dataArray}
         revealAnswers={false}
         acrosses={acrosses}
         downs={downs}
-      />
+      /> */}
       <Crossword
         rows={15}
         columns={15}
         data={grid}
-        revealAnswers={false}
+        // revealAnswers={true}
         acrosses={exampleAcrosses}
         downs={exampleDowns}
+        onInput={onInput}
       />
     </div>
   );

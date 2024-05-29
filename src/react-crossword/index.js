@@ -5,7 +5,15 @@ import Clues from "./Clues";
 const alphabet =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
-function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
+function Crossword({
+  rows,
+  columns,
+  data,
+  revealAnswers,
+  acrosses,
+  downs,
+  onInput,
+}) {
   const cols = data[0].length;
   //   if (data.length !== rows * columns) {
   //     throw "Data Array must be of length equal to the number of rows multiplied by columns!";
@@ -20,6 +28,7 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
         const currentSquare = data[y][x];
 
         if (currentSquare) {
+          currentSquare.input = "";
           if (y === 0 || x === 0 || !data[y - 1][x] || !data[y][x - 1]) {
             currentSquare.displayNum = num;
             num++;
@@ -44,9 +53,6 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
   const [across, setAcross] = useState(true);
   const [xFocus, setXFocus] = useState(null);
   const [yFocus, setYFocus] = useState(null);
-  const [answerMap, setAnswerMap] = useState(
-    data.map((row) => row.map((cell) => (cell ? { answer: "" } : null))),
-  );
   const [currentClue, setCurrentClue] = useState(null);
 
   function toggleDirection() {
@@ -69,15 +75,23 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
   function handleKeyDown(char) {
     char.preventDefault();
     if (alphabet.includes(char.key)) {
-      setAnswerMap(
-        answerMap.map((row, yIndex) =>
-          row.map((col, xIndex) =>
-            yIndex === yFocus && xIndex === xFocus
-              ? { answer: char.key.toUpperCase() }
-              : col,
-          ),
+      const nextState = dataSet.map((row, yIndex) =>
+        row.map((col, xIndex) =>
+          yIndex === yFocus && xIndex === xFocus
+            ? { ...col, input: char.key.toUpperCase() }
+            : col,
         ),
       );
+      let newData;
+      if (onInput) {
+        newData = onInput(char.key.toUpperCase(), nextState);
+      }
+
+      if (newData) {
+        setDataSet(newData);
+      } else {
+        setDataSet(nextState);
+      }
       across
         ? setFocus(xFocus + 1, yFocus, true)
         : setFocus(xFocus, yFocus + 1, false);
@@ -276,30 +290,30 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
   }
 
   function handleBackspace() {
-    const currentInput = answerMap[yFocus][xFocus]?.answer;
+    const currentInput = dataSet[yFocus][xFocus]?.input;
     if (currentInput) {
-      setAnswerMap(
-        answerMap.map((row, y) =>
+      setDataSet(
+        dataSet.map((row, y) =>
           row.map((col, x) =>
-            x === xFocus && y === yFocus ? { answer: "" } : col,
+            x === xFocus && y === yFocus ? { ...col, input: "" } : col,
           ),
         ),
       );
     } else {
       if (
         across
-          ? answerMap[yFocus][xFocus - 1]
-          : answerMap[yFocus - 1] && answerMap[yFocus - 1][xFocus]
+          ? dataSet[yFocus][xFocus - 1]
+          : dataSet[yFocus - 1] && dataSet[yFocus - 1][xFocus]
       ) {
-        setAnswerMap(
-          answerMap.map((row, y) =>
+        setDataSet(
+          dataSet.map((row, y) =>
             row.map((col, x) =>
               across
                 ? x === xFocus - 1 && y === yFocus
-                  ? { answer: "" }
+                  ? { ...col, input: "" }
                   : col
                 : x === xFocus && y === yFocus - 1
-                ? { answer: "" }
+                ? { ...col, input: "" }
                 : col,
             ),
           ),
@@ -336,7 +350,7 @@ function Crossword({ rows, columns, data, revealAnswers, acrosses, downs }) {
                 focus={y === yFocus && x === xFocus}
                 y={y}
                 x={x}
-                input={answerMap[y][x]?.answer}
+                input={dataSet[y][x]?.input}
                 setFocus={setFocus}
                 toggleDirection={toggleDirection}
                 clueSelected={
