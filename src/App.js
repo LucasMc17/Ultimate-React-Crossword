@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import "./App.css";
 import Crossword from "./react-crossword";
 import {
   grid,
@@ -7,12 +5,7 @@ import {
   exampleDowns,
 } from "./react-crossword/utils/exampleData";
 
-// const dataArray = [null, { answer: "A" }, {}, {}, {}, {}, {}, {}, {}, {}];
 const dataArray = [
-  // [null, { answer: "A" }, { answer: "B" }, { answer: "C" }, null],
-  // [{ answer: "E" }, { answer: "1" }, null, { answer: "D" }, { answer: "A" }],
-  // [null, { answer: "F" }, { answer: "G" }, { answer: "ABC" }, null],
-  // [null, { answer: "F" }, { answer: "GFEEEEEE" }, { answer: "ABC" }, null],
   [{ answer: "S" }, { answer: "A" }, { answer: "G" }, { answer: "E" }, null],
   [
     { answer: "P" },
@@ -115,8 +108,6 @@ function App() {
   return (
     <div className="App">
       <Crossword
-        rows={2}
-        columns={5}
         data={dataArray}
         revealAnswers={false}
         acrosses={acrosses}
@@ -126,10 +117,26 @@ function App() {
         onClueCorrect={onClueCorrect}
         onPuzzleFinished={onPuzzleFinished}
         onPuzzleCorrect={onPuzzleCorrect}
+        crosswordStyle={{
+          backgroundColor: "blue",
+        }}
+        puzzleStyle={{
+          backgroundColor: "red",
+        }}
+        squareStyle={{
+          backgroundColor: "green",
+          borderRadius: "10px",
+        }}
+        selectedSquareColor={"cyan"}
+        selectedClueColor={"white"}
+        puzzleClassnames={"hello"}
+        crosswordClassnames={"world"}
+        squareClassnames={"I-am-a-square"}
+        clueMenuClassnames={"I am the clue menu"}
+        clueListClassnames={"I am a list of clues"}
+        clueClassnames={"I am a clue!"}
       />
       <Crossword
-        rows={15}
-        columns={15}
         data={grid}
         // revealAnswers={true}
         acrosses={exampleAcrosses}
@@ -137,6 +144,7 @@ function App() {
         onInput={onInput}
         onCellCorrect={onCellCorrect}
         onClueCorrect={onClueCorrect}
+        squareStyle={{ backgroundColor: "gray" }}
       />
     </div>
   );

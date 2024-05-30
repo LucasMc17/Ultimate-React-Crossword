@@ -6,8 +6,6 @@ const alphabet =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
 function Crossword({
-  rows,
-  columns,
   data,
   revealAnswers,
   acrosses,
@@ -17,12 +15,22 @@ function Crossword({
   onClueCorrect,
   onPuzzleFinished,
   onPuzzleCorrect,
+  crosswordStyle,
+  puzzleStyle,
+  squareStyle,
+  selectedSquareColor,
+  selectedClueColor,
+  puzzleClassnames,
+  crosswordClassnames,
+  squareClassnames,
+  clueMenuClassnames,
+  clueListClassnames,
+  clueClassnames,
 }) {
   const cols = data[0].length;
-  //   if (data.length !== rows * columns) {
-  //     throw "Data Array must be of length equal to the number of rows multiplied by columns!";
-  //   }
-  //   const size = `calc(${100 / columns}% - 6px)`;
+  if (!data.every((row) => row.length === cols)) {
+    throw new Error("All rows must be of equal length");
+  }
   const size = `calc(${100 / cols}% - 2px)`;
 
   function getClueMap() {
@@ -58,10 +66,6 @@ function Crossword({
   const [xFocus, setXFocus] = useState(null);
   const [yFocus, setYFocus] = useState(null);
   const [currentClue, setCurrentClue] = useState(null);
-
-  function toggleDirection() {
-    setAcross(!across);
-  }
 
   function setFocus(x, y, across) {
     if (dataSet && dataSet[y]) {
@@ -301,27 +305,6 @@ function Crossword({
           newX = forward ? 0 : dataSet[0].length - 1;
         }
       }
-      // next look for the next clue
-      //   while (newX !== dataSet[0].length - 1 || newY !== dataSet.length - 1) {
-      //     console.log("WHILE LOOP");
-      //     if (newX !== dataSet[0].length - 1) {
-      //       console.log("MOVING RIGHT");
-      //       newX++;
-      //       console.log("X: ", newX, "Y: ", newY);
-      //     } else if (newY !== dataSet.length - 1) {
-      //       console.log("MOVING DOWN");
-      //       newY++;
-      //       newX = 0;
-      //     }
-      //     if (
-      //       dataSet[newY][newX] &&
-      //       dataSet[newY][newX].acrossNum > currentClue
-      //     ) {
-      //       setFocus(newX, newY, across);
-      //       return;
-      //     }
-      //   }
-      // }
     }
   }
 
@@ -363,22 +346,26 @@ function Crossword({
 
   return (
     <div
-      style={{ display: "flex", height: "100vh" }}
-      id="crossword"
+      style={{ display: "flex", height: "100vh", ...puzzleStyle }}
+      className={`react-crossword ${puzzleClassnames}`}
       onKeyDown={handleKeyDown}
       tabIndex="0"
     >
       <div
+        className={crosswordClassnames}
         style={{
           width: "66%",
           backgroundColor: "black",
           height: "fit-content",
+          ...crosswordStyle,
         }}
       >
         {data.map((row, y) => (
           <div style={{ width: "100%", display: "flex" }} key={y}>
             {row.map((cell, x) => (
               <Square
+                squareClassnames={squareClassnames}
+                squareStyle={squareStyle}
                 key={`${x}-${y}`}
                 size={size}
                 across={across}
@@ -389,13 +376,14 @@ function Crossword({
                 x={x}
                 input={dataSet[y][x]?.input}
                 setFocus={setFocus}
-                toggleDirection={toggleDirection}
                 clueSelected={
                   dataSet[y][x] &&
                   (across
                     ? dataSet[y][x].acrossNum === currentClue
                     : dataSet[y][x].downNum === currentClue)
                 }
+                selectedSquareColor={selectedSquareColor}
+                selectedClueColor={selectedClueColor}
               />
             ))}
           </div>
@@ -407,6 +395,11 @@ function Crossword({
         across={across}
         currentClue={currentClue}
         focusClue={focusClue}
+        selectedSquareColor={selectedSquareColor}
+        selectedClueColor={selectedClueColor}
+        clueMenuClassnames={clueMenuClassnames}
+        clueListClassnames={clueListClassnames}
+        clueClassnames={clueClassnames}
       />
     </div>
   );

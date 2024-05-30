@@ -1,6 +1,14 @@
 import { useRef } from "react";
 
-function Clue({ isSelected, focusClue, clue, direction }) {
+function Clue({
+  isSelected,
+  focusClue,
+  clue,
+  direction,
+  selectedSquareColor,
+  selectedClueColor,
+  clueClassnames,
+}) {
   const ref = useRef();
 
   const scrollToElement = () => {
@@ -31,10 +39,13 @@ function Clue({ isSelected, focusClue, clue, direction }) {
       }}
       ref={ref}
       onClick={() => focusClue(clue.num, direction === "across")}
+      className={clueClassnames}
     >
       <div
         style={{
-          backgroundColor: isSelected ? "blue" : "transparent",
+          backgroundColor: isSelected
+            ? selectedSquareColor || "blue"
+            : "transparent",
           height: "100%",
         }}
       >
@@ -44,7 +55,9 @@ function Clue({ isSelected, focusClue, clue, direction }) {
         style={{
           textAlign: "left",
           padding: "0px 4px",
-          backgroundColor: isSelected ? "lightblue" : "transparent",
+          backgroundColor: isSelected
+            ? selectedClueColor || "lightblue"
+            : "transparent",
         }}
       >
         <p style={{ margin: "0" }}>{clue.clue}</p>

@@ -1,7 +1,7 @@
 import Letter from "./Letter";
-import { useState } from "react";
 
 function Square({
+  squareClassnames,
   size,
   data,
   revealAnswers,
@@ -12,13 +12,16 @@ function Square({
   input,
   across,
   clueSelected,
+  squareStyle,
+  selectedSquareColor,
+  selectedClueColor,
 }) {
   if (!data) {
     return (
       <div
         style={{
-          backgroundColor: "black",
-          border: "1px solid black",
+          backgroundColor: "transparent",
+          margin: "1px",
           width: size,
           height: "0px",
           paddingTop: size,
@@ -28,19 +31,24 @@ function Square({
   }
   return (
     <div
+      className={squareClassnames}
       style={{
-        backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "white",
-        border: "1px solid black",
+        margin: "1px",
         width: size,
         height: "0px",
         paddingTop: size,
         position: "relative",
+        ...squareStyle,
+        // backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "",
+        backgroundColor: focus
+          ? selectedSquareColor || "blue"
+          : clueSelected
+          ? selectedClueColor || "lightblue"
+          : squareStyle?.backgroundColor || "white",
       }}
       onClick={() => {
-        // focus ? toggleDirection() : setFocus(x, y);
         setFocus(x, y, focus ? !across : across);
       }}
-      //   onFocus={() => setFocus(x, y)}
     >
       {data.displayNum ? (
         <small
@@ -67,7 +75,6 @@ function Square({
           display: "flex",
         }}
       >
-        {/* <h1>{data.acrossNum}</h1> */}
         {input ? (
           <>
             {input.split("").map((char, i) => (

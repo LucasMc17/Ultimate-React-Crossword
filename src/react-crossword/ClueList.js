@@ -1,11 +1,23 @@
 import Clue from "./Clue";
 
-function ClueList({ clues, across, currentClue, direction, focusClue }) {
+function ClueList({
+  clues,
+  across,
+  currentClue,
+  direction,
+  focusClue,
+  selectedSquareColor,
+  selectedClueColor,
+  clueListClassnames,
+  clueClassnames,
+}) {
   return (
-    <div style={{ width: "50%", height: "100%" }}>
+    <div
+      style={{ width: "50%", height: "100%" }}
+      className={clueListClassnames}
+    >
       <h1
         style={{
-          backgroundColor: "white",
           margin: "0",
         }}
       >
@@ -24,6 +36,9 @@ function ClueList({ clues, across, currentClue, direction, focusClue }) {
               focusClue={focusClue}
               clue={clue}
               direction={direction}
+              selectedSquareColor={selectedSquareColor}
+              selectedClueColor={selectedClueColor}
+              clueClassnames={clueClassnames}
             />
           );
         })}
