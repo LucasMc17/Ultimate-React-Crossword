@@ -212,17 +212,40 @@ function Crossword({
             skipClue(true);
           }
           break;
+        case " ":
+          setFocus(xFocus, yFocus, !across);
+          break;
         case "ArrowRight":
-          setFocus(xFocus + 1, yFocus, true);
+          for (let i = xFocus + 1; i < cols; i++) {
+            if (dataSet[yFocus][i]) {
+              setFocus(i, yFocus, true);
+              break;
+            }
+          }
           break;
         case "ArrowLeft":
-          setFocus(xFocus - 1, yFocus, true);
+          for (let i = xFocus - 1; i >= 0; i--) {
+            if (dataSet[yFocus][i]) {
+              setFocus(i, yFocus, true);
+              break;
+            }
+          }
           break;
         case "ArrowUp":
-          setFocus(xFocus, yFocus - 1, false);
+          for (let i = yFocus - 1; i >= 0; i--) {
+            if (dataSet[i][xFocus]) {
+              setFocus(xFocus, i, false);
+              break;
+            }
+          }
           break;
         case "ArrowDown":
-          setFocus(xFocus, yFocus + 1, false);
+          for (let i = yFocus + 1; i < dataSet.length; i++) {
+            if (dataSet[i][xFocus]) {
+              setFocus(xFocus, i, false);
+              break;
+            }
+          }
           break;
         case "Backspace":
           handleBackspace();
