@@ -44,7 +44,7 @@ function Clue({
       <div
         style={{
           backgroundColor: isSelected
-            ? selectedSquareColor || "blue"
+            ? selectedSquareColor || "#96a8ff"
             : "transparent",
           height: "100%",
         }}
@@ -56,7 +56,7 @@ function Clue({
           textAlign: "left",
           padding: "0px 4px",
           backgroundColor: isSelected
-            ? selectedClueColor || "lightblue"
+            ? selectedClueColor || "#c2dfff"
             : "transparent",
         }}
       >

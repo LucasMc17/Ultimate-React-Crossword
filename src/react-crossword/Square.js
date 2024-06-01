@@ -39,11 +39,10 @@ function Square({
         paddingTop: size,
         position: "relative",
         ...squareStyle,
-        // backgroundColor: focus ? "blue" : clueSelected ? "lightblue" : "",
         backgroundColor: focus
-          ? selectedSquareColor || "blue"
+          ? selectedSquareColor || "#96a8ff"
           : clueSelected
-          ? selectedClueColor || "lightblue"
+          ? selectedClueColor || "#c2dfff"
           : squareStyle?.backgroundColor || "white",
       }}
       onClick={() => {
@@ -67,10 +66,10 @@ function Square({
       <div
         style={{
           width: "100%",
-          height: "90%",
+          height: "80%",
           zIndex: "0",
           position: "absolute",
-          bottom: "5%",
+          bottom: "7.5%",
           left: 0,
           display: "flex",
         }}

@@ -117,34 +117,34 @@ function App() {
         onClueCorrect={onClueCorrect}
         onPuzzleFinished={onPuzzleFinished}
         onPuzzleCorrect={onPuzzleCorrect}
-        crosswordStyle={{
-          backgroundColor: "blue",
-        }}
-        puzzleStyle={{
-          backgroundColor: "red",
-        }}
-        squareStyle={{
-          backgroundColor: "green",
-          borderRadius: "10px",
-        }}
-        selectedSquareColor={"cyan"}
-        selectedClueColor={"white"}
-        puzzleClassnames={"hello"}
-        crosswordClassnames={"world"}
-        squareClassnames={"I-am-a-square"}
-        clueMenuClassnames={"I am the clue menu"}
-        clueListClassnames={"I am a list of clues"}
-        clueClassnames={"I am a clue!"}
+        // crosswordStyle={{
+        //   backgroundColor: "blue",
+        // }}
+        // puzzleStyle={{
+        //   backgroundColor: "red",
+        // }}
+        // squareStyle={{
+        //   backgroundColor: "green",
+        //   borderRadius: "10px",
+        // }}
+        // selectedSquareColor={"cyan"}
+        // selectedClueColor={"white"}
+        // puzzleClassnames={"hello"}
+        // crosswordClassnames={"world"}
+        // squareClassnames={"I-am-a-square"}
+        // clueMenuClassnames={"I am the clue menu"}
+        // clueListClassnames={"I am a list of clues"}
+        // clueClassnames={"I am a clue!"}
       />
       <Crossword
         data={grid}
         // revealAnswers={true}
         acrosses={exampleAcrosses}
         downs={exampleDowns}
-        onInput={onInput}
-        onCellCorrect={onCellCorrect}
-        onClueCorrect={onClueCorrect}
-        squareStyle={{ backgroundColor: "gray" }}
+        // onInput={onInput}
+        // onCellCorrect={onCellCorrect}
+        // onClueCorrect={onClueCorrect}
+        // squareStyle={{ backgroundColor: "gray" }}
       />
     </div>
   );

@@ -107,7 +107,8 @@ function Crossword({
         newData = onCellCorrect(xFocus, yFocus, char.key, nextState) || newData;
       }
       if (
-        onClueCorrect && across
+        onClueCorrect &&
+        (across
           ? nextState
               .flat(1)
               .filter(
@@ -123,7 +124,7 @@ function Crossword({
                   square &&
                   square.downNum === nextState[yFocus][xFocus].downNum,
               )
-              .every((square) => square.input === square.answer)
+              .every((square) => square.input === square.answer))
       ) {
         newData =
           onClueCorrect(
@@ -146,7 +147,9 @@ function Crossword({
         ) {
           newData = onPuzzleCorrect(nextState) || newData;
         } else {
-          newData = onPuzzleFinished(nextState) || newData;
+          if (!dataSet[yFocus][xFocus]?.input) {
+            newData = onPuzzleFinished(nextState) || newData;
+          }
         }
       }
       if (newData) {
