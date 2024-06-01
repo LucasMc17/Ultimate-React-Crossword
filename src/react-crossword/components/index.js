@@ -27,12 +27,19 @@ function Crossword({
   clueListClassnames,
   clueClassnames,
 }) {
+  // Get the number of columns in the puzzle, based on the length of the first subarray passed to us in the data
   const cols = data[0].length;
+
+  // Throw an error if any row in the data is not of equal length (puzzles must be a regular grid)
   if (!data.every((row) => row.length === cols)) {
     throw new Error("All rows must be of equal length");
   }
+
+  // Calculate the size of each cell in the puzzle based on the number of columns
   const size = `calc(${100 / cols}% - 2px)`;
 
+  // Format the inputted data grid with clue numbers, one for its corresponding across number and one for it's down number
+  // Also add a display number where needed
   function getClueMap() {
     let num = 1;
     for (let y = 0; y < data.length; y++) {
@@ -61,12 +68,17 @@ function Crossword({
     return data;
   }
 
-  const [dataSet, setDataSet] = useState(getClueMap());
-  const [across, setAcross] = useState(true);
-  const [xFocus, setXFocus] = useState(null);
-  const [yFocus, setYFocus] = useState(null);
-  const [currentClue, setCurrentClue] = useState(null);
+  /*** CREATE CROSSWORD STATE ***/
 
+  const [dataSet, setDataSet] = useState(getClueMap()); // Full answer map
+  const [across, setAcross] = useState(true); // Boolean to track user's directional focus
+  const [xFocus, setXFocus] = useState(null); // X coordinate of user focus
+  const [yFocus, setYFocus] = useState(null); // Y coordinate of user focus
+  const [currentClue, setCurrentClue] = useState(null); // null or object to track number and direction of currently focused clue
+
+  /*** EVENT HANDLERS ***/
+
+  // Set user focus on particular square, if it is not a blank
   function setFocus(x, y, across) {
     if (dataSet && dataSet[y]) {
       if (dataSet[y][x]) {
@@ -80,63 +92,88 @@ function Crossword({
     }
   }
 
-  function handleKeyDown(char) {
-    char.preventDefault();
-    if (alphabet.includes(char.key)) {
+  // Handle user keystroke, either to input guess, backspace or navigate grid
+  function handleKeyDown(e) {
+    e.preventDefault();
+
+    // If the input is alphanumeric, input guess
+    if (alphabet.includes(e.key)) {
+      // If the cell is marked disabled, move on as normal
       if (dataSet[yFocus][xFocus].disabled) {
         across
           ? setFocus(xFocus + 1, yFocus, true)
           : setFocus(xFocus, yFocus + 1, false);
         return;
       }
+
+      // Create the next state of the crossword by mapping over the current state with the new guess
       const nextState = dataSet.map((row, yIndex) =>
         row.map((col, xIndex) =>
           yIndex === yFocus && xIndex === xFocus
-            ? { ...col, input: char.key.toUpperCase() }
+            ? { ...col, input: e.key.toUpperCase() }
             : col,
         ),
       );
+
+      // Custom event handler flow
+      // Create a new placeholder for the state of the puzzle after event handlers
       let newData;
+
+      // Run user's onInput function, if it exists. Replace newData with the return statement, if it exists
       if (onInput) {
-        newData = onInput(xFocus, yFocus, char.key.toUpperCase(), nextState);
+        newData = onInput(xFocus, yFocus, e.key.toUpperCase(), nextState);
       }
+
+      // Run user's onCellCorrect function, if it exists, and cell is correct. Replace newData with the return statement, if it exists
       if (
         onCellCorrect &&
         nextState[yFocus][xFocus].input === nextState[yFocus][xFocus].answer
       ) {
-        newData = onCellCorrect(xFocus, yFocus, char.key, nextState) || newData;
-      }
-      if (
-        onClueCorrect &&
-        (across
-          ? nextState
-              .flat(1)
-              .filter(
-                (square) =>
-                  square &&
-                  square.acrossNum === nextState[yFocus][xFocus].acrossNum,
-              )
-              .every((square) => square.input === square.answer)
-          : nextState
-              .flat(1)
-              .filter(
-                (square) =>
-                  square &&
-                  square.downNum === nextState[yFocus][xFocus].downNum,
-              )
-              .every((square) => square.input === square.answer))
-      ) {
         newData =
-          onClueCorrect(
-            across
-              ? dataSet[yFocus][xFocus].acrossNum
-              : dataSet[yFocus][xFocus].downNum,
-            across ? "across" : "down",
-            nextState,
-          ) || newData;
+          onCellCorrect(xFocus, yFocus, e.key, newData || nextState) || newData;
       }
+
+      // Run user's onClueCorrect function, if it exists, once for all cells associated with the across clue and once for the down clue
+      // Replace newData with the return statement, if it exists
+      if (onClueCorrect) {
+        if (
+          nextState
+            .flat(1)
+            .filter(
+              (square) =>
+                square &&
+                square.acrossNum === nextState[yFocus][xFocus].acrossNum,
+            )
+            .every((square) => square.input === square.answer)
+        ) {
+          newData =
+            onClueCorrect(
+              dataSet[yFocus][xFocus].acrossNum,
+              "across",
+              newData || nextState,
+            ) || newData;
+        }
+        if (
+          nextState
+            .flat(1)
+            .filter(
+              (square) =>
+                square && square.downNum === nextState[yFocus][xFocus].downNum,
+            )
+            .every((square) => square.input === square.answer)
+        ) {
+          newData =
+            onClueCorrect(
+              dataSet[yFocus][xFocus].downNum,
+              "down",
+              newData || nextState,
+            ) || newData;
+        }
+      }
+
+      // Run user's onPuzzleFinished or onPuzzleCorrect function, as appropriate, if they exist. Replace newData with the return statement, if it exists
       if (
-        onPuzzleFinished &&
+        (onPuzzleFinished || onPuzzleCorrect) &&
         nextState.flat(1).every((square) => !square || square.input)
       ) {
         if (
@@ -145,25 +182,31 @@ function Crossword({
             .flat(1)
             .every((square) => !square || square.input === square.answer)
         ) {
-          newData = onPuzzleCorrect(nextState) || newData;
+          newData = onPuzzleCorrect(newData || nextState) || newData;
         } else {
-          if (!dataSet[yFocus][xFocus]?.input) {
-            newData = onPuzzleFinished(nextState) || newData;
+          if (onPuzzleFinished && !dataSet[yFocus][xFocus]?.input) {
+            newData = onPuzzleFinished(newData || nextState) || newData;
           }
         }
       }
+
+      // Finally, replace the puzzle's data with the newData result if it exists, or just use nextState if not
       if (newData) {
         setDataSet(newData);
       } else {
         setDataSet(nextState);
       }
+      // End of custom event handler flow
+
+      // Advance user focus by 1 square in current direction
       across
         ? setFocus(xFocus + 1, yFocus, true)
         : setFocus(xFocus, yFocus + 1, false);
     } else {
-      switch (char.key) {
+      // If key is not alphanumeric, switch to navigation actions
+      switch (e.key) {
         case "Tab":
-          if (char.shiftKey) {
+          if (e.shiftKey) {
             skipClue(false);
           } else {
             skipClue(true);
@@ -190,6 +233,7 @@ function Crossword({
     }
   }
 
+  // Set focus to the first square associated with a given clue
   function focusClue(number, across) {
     for (let y = 0; y < dataSet.length; y++) {
       for (let x = 0; x < dataSet[y].length; x++) {
@@ -202,6 +246,7 @@ function Crossword({
     }
   }
 
+  // Skip to the first square of the next or previous clue, switching direction as necessary
   function skipClue(forward) {
     let newX = xFocus,
       newY = yFocus;
@@ -253,7 +298,6 @@ function Crossword({
       }
     }
     if (!across) {
-      // first get the first square of the clue
       let newX = xFocus,
         newY = yFocus;
       if (dataSet[newY][newX].displayNum !== currentClue) {
@@ -311,9 +355,10 @@ function Crossword({
     }
   }
 
+  // Remove input and navigate backwards
   function handleBackspace() {
     const currentInput = dataSet[yFocus][xFocus]?.input;
-    if (currentInput) {
+    if (currentInput && !dataSet[yFocus][xFocus]?.disabled) {
       setDataSet(
         dataSet.map((row, y) =>
           row.map((col, x) =>
@@ -324,8 +369,11 @@ function Crossword({
     } else {
       if (
         across
-          ? dataSet[yFocus][xFocus - 1]
-          : dataSet[yFocus - 1] && dataSet[yFocus - 1][xFocus]
+          ? dataSet[yFocus][xFocus - 1] &&
+            !dataSet[yFocus][xFocus - 1]?.disabled
+          : dataSet[yFocus - 1] &&
+            dataSet[yFocus - 1][xFocus] &&
+            !dataSet[yFocus - 1][xFocus]?.disabled
       ) {
         setDataSet(
           dataSet.map((row, y) =>

@@ -16,6 +16,7 @@ function Square({
   selectedSquareColor,
   selectedClueColor,
 }) {
+  // Return a black square for nulls
   if (!data) {
     return (
       <div
@@ -29,6 +30,8 @@ function Square({
       ></div>
     );
   }
+
+  // Else, return a clickable, typable square
   return (
     <div
       className={squareClassnames}

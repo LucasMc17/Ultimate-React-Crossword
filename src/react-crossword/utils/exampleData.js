@@ -1,3 +1,4 @@
+// Full example data for a normal-sized NYT Crossword (Monday, 5/27/2024)
 export const examplePuzzleFull = {
   grid: [
     [
@@ -348,6 +349,7 @@ export const examplePuzzleFull = {
   ],
 };
 
+// Full example data for a mini-sized NYT Crossword (Sunday, 5/26/2024)
 export const examplePuzzleShort = {
   grid: [
     [{ answer: "S" }, { answer: "A" }, { answer: "G" }, { answer: "E" }, null],

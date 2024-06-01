@@ -11,6 +11,7 @@ function Clue({
 }) {
   const ref = useRef();
 
+  // Handle scroll into view
   const scrollToElement = () => {
     const { current } = ref;
     if (current) {
@@ -28,6 +29,7 @@ function Clue({
   if (isSelected) {
     scrollToElement();
   }
+
   return (
     <div
       style={{

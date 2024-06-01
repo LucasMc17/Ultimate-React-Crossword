@@ -9,9 +9,10 @@ const onInput = (x, y, input, crosswordData) => {
   // console.log(crosswordData);
   // console.log(x);
   // console.log(y);
-  // return crosswordData.map((row) =>
-  //   row.map((col) => (col ? { ...col, input } : col)),
-  // );
+  console.log(crosswordData);
+  return crosswordData.map((row) =>
+    row.map((col) => (col ? { ...col, special: "ON INPUT" } : col)),
+  );
 };
 
 const onCellCorrect = (x, y, input, crosswordData) => {
@@ -20,9 +21,11 @@ const onCellCorrect = (x, y, input, crosswordData) => {
   // console.log(crosswordData);
   // console.log(x);
   // console.log(y);
-  // return crosswordData.map((row) =>
-  //   row.map((col) => (col ? { ...col, input: "CORRECT" } : col)),
-  // );
+  return crosswordData.map((row, yi) =>
+    row.map((col, xi) =>
+      yi === y && xi === x ? { ...col, special: "ON CELL CORRECT" } : col,
+    ),
+  );
 };
 
 const onClueCorrect = (clueNum, direction, crosswordData) => {
@@ -31,10 +34,10 @@ const onClueCorrect = (clueNum, direction, crosswordData) => {
     row.map((cell, x) =>
       direction === "across"
         ? cell && cell.acrossNum === clueNum
-          ? { ...cell, disabled: true }
+          ? { ...cell, disabled: true, special: "ON CLUE CORRECT" }
           : cell
         : cell && cell.downNum === clueNum
-        ? { ...cell, disabled: true }
+        ? { ...cell, disabled: true, special: "ON CLUE CORRECT" }
         : cell,
     ),
   );
@@ -62,9 +65,9 @@ function App() {
         revealAnswers={false}
         acrosses={examplePuzzleShort.acrosses}
         downs={examplePuzzleShort.downs}
-        onInput={onInput}
-        onCellCorrect={onCellCorrect}
-        onClueCorrect={onClueCorrect}
+        // onInput={onInput}
+        // onCellCorrect={onCellCorrect}
+        // onClueCorrect={onClueCorrect}
         onPuzzleFinished={onPuzzleFinished}
         onPuzzleCorrect={onPuzzleCorrect}
         // crosswordStyle={{
