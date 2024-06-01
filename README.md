@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# A Flexible React Crossword for Every Cruciverbalist
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ultimate React Crossword is a user-friendly, deeply flexible crossword component. Whether you're building the next collaborative crossword solving platform or just looking to build out the games section of your local paper's website, Ultimate React Crossword is the component for you. It's simple enough to dive into from moment one, but deep enough to allow creative developers to create entirely new crossword experiences via it's array of custom styling and event handling options!
 
-## Available Scripts
+## Installing the Package
 
-In the project directory, you can run:
+Simply run `npm i ultimate-react-crossword` in your terminal to get started.
 
-### `npm start`
+## Importing the Package
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Add the following code to your react project, then utilize the crossword function as you would any other component:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+import Crossword from 'ultimate-react-crossword';
 
-### `npm test`
+...
+<body>
+    <div>
+        <Crossword />
+    </div>
+</body>
+...
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Adding Your Data
 
-### `npm run build`
+### Required Attributes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. `data`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   A two-dimensional array representing the grid of the crossword. Regular squares should be represented by an object with an answer property representing the correct input for that square. A black square should be represented by `null`. For example, here is the correct input for a simple, 2x2 grid with a black square in the upper right:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```
+   [
+    [{ answer: "A" }, null],
+    [{ answer: "B" }, { answer: "C" }],
+   ]
+   ```
 
-### `npm run eject`
+   Note that the component will throw an error if any of the subarrays are of unequal length.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. `acrosses`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   An array of objects, each representing the number (in ascending order) and the text of an across clue, like so:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```
+   [
+    { num: 1, clue: "Parsley, ___, rosemary and thyme" },
+    { num: 5, clue: "Garden Growth" },
+    { num: 7, clue: "Synonym of 'evade' and 'avoid'" }
+   ]
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   Pay particular attention to the number property-- if something doesn't seem to be working, make sure the number of each clue aligns properly with the ones automatically appearing on the crossword's grid.
 
-## Learn More
+3. `downs`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   An array exactly like the acrosses, only represening the downward clues of the puzzle:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```
+   [
+    { num: 1, clue: "Shoots out, as lava" },
+    { num: 2, clue: "Nickname for Alexandra" },
+    { num: 3, clue: "Bandage material" }
+   ]
+   ```
 
-### Code Splitting
+### Optional Attributes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### `revealAnswers`
 
-### Analyzing the Bundle Size
+A boolean, which when true displays the correct answer in each square of the puzzle.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Event Handlers
 
-### Making a Progressive Web App
+The Crossword component supports a suite of event handler functions. For more information on when these functions will run and what information they have access to, refer to the full documentation HERE.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. `onInput` // A function that runs whenever the user enters a guess in any square of the puzzle
+2. `onCellCorrect` // A function that runs whenever the user enters the correct value in any square of the puzzle
+3. `onClueCorrect` // A function that runs whenever the user enters the correct value in every cell of a particular clue
+4. `onPuzzleFinished` // A function that runs whenever the user fills the entire puzzle grid with inputs, but _not_ when the entire grid is correct
+5. `onPuzzleCorrect` // A function that runs whenever the user has input the correct value in every single square of the puzzle
 
-### Advanced Configuration
+#### Custom Style Objects
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The Crossword component also supports a range of custom styling options. Each of these expects an object composed of various CSS properties as key-value pairs like so:
 
-### Deployment
+```
+{ backgroundColor: "red", borderRadius: "10px" }
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. `puzzleStyle` // Applies to the entire space of the puzzle, including the clue lists
+2. `crosswordStyle` // Applies to the crossword board itself
+3. `squareStyle` // Applies to each square of the puzzle
 
-### `npm run build` fails to minify
+#### Custom Classes and Color Themes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For additional styling flexibility, the component allows the user to apply specific classnames to each modular component of the puzzle, and to choose key colors to represent the user's focus within the puzzle. For the full list of these attributes and examples of how they can be used, refer to the full documentation HERE.
+
+## Example Data
+
+Ultimate React Crossword also comes loaded with two example crossword data sets which can be imported from the package and plugged directly into the Crossword component. These include:
+
+1. `examplePuzzleFull`: A full, 15x15 New York Times Monday puzzle.
+2. `examplePuzzleShort`: A 5x5 New York Times Mini puzzle
+
+They can be imported with the following code:
+
+```
+import Crossword, {
+  examplePuzzleFull,
+  examplePuzzleShort,
+} from "./react-crossword";
+
+...
+
+function App() {
+  return (
+    <div className="App">
+      <Crossword
+        data={examplePuzzleShort.grid}
+        acrosses={examplePuzzleShort.acrosses}
+        downs={examplePuzzleShort.downs}
+      />
+      <Crossword
+        data={examplePuzzleFull.grid}
+        acrosses={examplePuzzleFull.acrosses}
+        downs={examplePuzzleFull.downs}
+      />
+    </div>
+  );
+}
+```
+
+## Want to Learn More?
+
+Feel free to browse the full documentation HERE! Or check out the project on GitHub HERE.
