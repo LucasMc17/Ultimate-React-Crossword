@@ -110,7 +110,7 @@ They can be imported with the following code:
 import Crossword, {
   examplePuzzleFull,
   examplePuzzleShort,
-} from "./react-crossword";
+} from "ultimate-react-crossword";
 
 ...
 
