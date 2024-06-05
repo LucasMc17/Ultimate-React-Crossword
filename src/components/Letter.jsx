@@ -1,5 +1,5 @@
 import alphabet from "../utils/alphabet.json";
-import SVGElement from "./SVGElement";
+import SVGElement from "./SVGElement.jsx";
 
 function Letter({ char, answer }) {
   const data = alphabet[char];

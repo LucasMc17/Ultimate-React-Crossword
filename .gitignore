@@ -10,6 +10,8 @@
 
 # production
 /build
+dist
+ultimate-react-crossword*.tgz
 
 # misc
 .DS_Store

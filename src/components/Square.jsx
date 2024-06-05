@@ -1,4 +1,4 @@
-import Letter from "./Letter";
+import Letter from "./Letter.jsx";
 
 function Square({
   squareClassnames,

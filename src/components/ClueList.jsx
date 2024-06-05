@@ -1,4 +1,4 @@
-import Clue from "./Clue";
+import Clue from "./Clue.jsx";
 
 function ClueList({
   clues,

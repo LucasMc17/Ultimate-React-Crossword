@@ -1,6 +1,6 @@
-import Square from "./Square";
+import Square from "./Square.jsx";
 import { useState } from "react";
-import Clues from "./Clues";
+import Clues from "./Clues.jsx";
 
 const alphabet =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";

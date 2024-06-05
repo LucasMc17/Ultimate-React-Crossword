@@ -1,4 +1,4 @@
-import ClueList from "./ClueList";
+import ClueList from "./ClueList.jsx";
 
 function Clues({
   acrosses,
