@@ -14,6 +14,13 @@
   ],
   "author": "Lucas McGill",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LucasMc17/Ultimate-React-Crossword"
+  },
+  "bugs": {
+    "url": "https://github.com/LucasMc17/Ultimate-React-Crossword/issues"
+  },
   "devDependencies": {
     "@babel/preset-react": "^7.24.6",
     "@rollup/plugin-babel": "^6.0.4",
