@@ -10,16 +10,16 @@ Simply run `npm i ultimate-react-crossword` in your terminal to get started.
 
 Add the following code to your react project, then utilize the crossword function as you would any other component:
 
-```
-import Crossword from 'ultimate-react-crossword';
+```js
+import Crossword from "ultimate-react-crossword";
 
-...
+// ...
 <body>
-    <div>
-        <Crossword />
-    </div>
-</body>
-...
+  <div>
+    <Crossword />
+  </div>
+</body>;
+// ...
 ```
 
 ## Adding Your Data
@@ -30,11 +30,11 @@ import Crossword from 'ultimate-react-crossword';
 
    A two-dimensional array representing the grid of the crossword. Regular squares should be represented by an object with an answer property representing the correct input for that square. A black square should be represented by `null`. For example, here is the correct input for a simple, 2x2 grid with a black square in the upper right:
 
-   ```
+   ```js
    [
-    [{ answer: "A" }, null],
-    [{ answer: "B" }, { answer: "C" }],
-   ]
+     [{ answer: "A" }, null],
+     [{ answer: "B" }, { answer: "C" }],
+   ];
    ```
 
    Note that the component will throw an error if any of the subarrays are of unequal length.
@@ -43,12 +43,12 @@ import Crossword from 'ultimate-react-crossword';
 
    An array of objects, each representing the number (in ascending order) and the text of an across clue, like so:
 
-   ```
+   ```js
    [
-    { num: 1, clue: "Parsley, ___, rosemary and thyme" },
-    { num: 5, clue: "Garden Growth" },
-    { num: 7, clue: "Synonym of 'evade' and 'avoid'" }
-   ]
+     { num: 1, clue: "Parsley, ___, rosemary and thyme" },
+     { num: 5, clue: "Garden Growth" },
+     { num: 7, clue: "Synonym of 'evade' and 'avoid'" },
+   ];
    ```
 
    Pay particular attention to the number property-- if something doesn't seem to be working, make sure the number of each clue aligns properly with the ones automatically appearing on the crossword's grid.
@@ -57,12 +57,12 @@ import Crossword from 'ultimate-react-crossword';
 
    An array exactly like the acrosses, only represening the downward clues of the puzzle:
 
-   ```
+   ```js
    [
-    { num: 1, clue: "Shoots out, as lava" },
-    { num: 2, clue: "Nickname for Alexandra" },
-    { num: 3, clue: "Bandage material" }
-   ]
+     { num: 1, clue: "Shoots out, as lava" },
+     { num: 2, clue: "Nickname for Alexandra" },
+     { num: 3, clue: "Bandage material" },
+   ];
    ```
 
 ### Optional Attributes
@@ -73,7 +73,7 @@ A boolean, which when true displays the correct answer in each square of the puz
 
 #### Event Handlers
 
-The Crossword component supports a suite of event handler functions. For more information on when these functions will run and what information they have access to, refer to the full documentation HERE.
+The Crossword component supports a suite of event handler functions. For more information on when these functions will run and what information they have access to, refer to the full documentation, coming soon!
 
 1. `onInput` // A function that runs whenever the user enters a guess in any square of the puzzle
 2. `onCellCorrect` // A function that runs whenever the user enters the correct value in any square of the puzzle
@@ -85,7 +85,7 @@ The Crossword component supports a suite of event handler functions. For more in
 
 The Crossword component also supports a range of custom styling options. Each of these expects an object composed of various CSS properties as key-value pairs like so:
 
-```
+```js
 { backgroundColor: "red", borderRadius: "10px" }
 ```
 
@@ -95,7 +95,7 @@ The Crossword component also supports a range of custom styling options. Each of
 
 #### Custom Classes and Color Themes
 
-For additional styling flexibility, the component allows the user to apply specific classnames to each modular component of the puzzle, and to choose key colors to represent the user's focus within the puzzle. For the full list of these attributes and examples of how they can be used, refer to the full documentation HERE.
+For additional styling flexibility, the component allows the user to apply specific classnames to each modular component of the puzzle, and to choose key colors to represent the user's focus within the puzzle. For the full list of these attributes and examples of how they can be used, refer to the full documentation, which is coming soon!
 
 ## Example Data
 
@@ -106,13 +106,13 @@ Ultimate React Crossword also comes loaded with two example crossword data sets 
 
 They can be imported with the following code:
 
-```
+```js
 import Crossword, {
   examplePuzzleFull,
   examplePuzzleShort,
 } from "ultimate-react-crossword";
 
-...
+// ...
 
 function App() {
   return (
@@ -134,4 +134,4 @@ function App() {
 
 ## Want to Learn More?
 
-Feel free to browse the full documentation HERE! Or check out the project on GitHub HERE.
+Feel free to check out the [project on GitHub](https://github.com/LucasMc17/Ultimate-React-Crossword)! Full documentation is coming soon!

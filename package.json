@@ -1,6 +1,6 @@
 {
   "name": "ultimate-react-crossword",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A flexible component for creating crossword puzzles in React web apps",
   "main": "dist/index.js",
   "type": "module",
