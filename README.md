@@ -73,7 +73,7 @@ A boolean, which when true displays the correct answer in each square of the puz
 
 #### Event Handlers
 
-The Crossword component supports a suite of event handler functions. For more information on when these functions will run and what information they have access to, refer to the full documentation, coming soon!
+The Crossword component supports a suite of event handler functions. For more information on when these functions will run and what information they have access to, refer to the [full documentation](https://lucasmcgill.nyc/packages/ultimate-react-crossword/docs)!
 
 1. `onInput` // A function that runs whenever the user enters a guess in any square of the puzzle
 2. `onCellCorrect` // A function that runs whenever the user enters the correct value in any square of the puzzle
@@ -95,7 +95,7 @@ The Crossword component also supports a range of custom styling options. Each of
 
 #### Custom Classes and Color Themes
 
-For additional styling flexibility, the component allows the user to apply specific classnames to each modular component of the puzzle, and to choose key colors to represent the user's focus within the puzzle. For the full list of these attributes and examples of how they can be used, refer to the full documentation, which is coming soon!
+For additional styling flexibility, the component allows the user to apply specific classnames to each modular component of the puzzle, and to choose key colors to represent the user's focus within the puzzle. For the full list of these attributes and examples of how they can be used, refer to the [full documentation](https://lucasmcgill.nyc/packages/ultimate-react-crossword/docs)!
 
 ## Example Data
 
@@ -134,4 +134,4 @@ function App() {
 
 ## Want to Learn More?
 
-Feel free to check out the [project on GitHub](https://github.com/LucasMc17/Ultimate-React-Crossword)! Full documentation is coming soon!
+Feel free to check out the [project on GitHub](https://github.com/LucasMc17/Ultimate-React-Crossword), or checkout the [full documentation](https://lucasmcgill.nyc/packages/ultimate-react-crossword/docs)!
